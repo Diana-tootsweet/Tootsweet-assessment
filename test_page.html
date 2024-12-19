@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proofing Test 1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background-color: #ffffff;
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .title {
+            font-size: 2em;
+            color: #2196F3;
+            font-weight: bold;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .instructions {
+            text-align: justify;
+            line-height: 1.6;
+        }
+        .instructions ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .instructions ul li::before {
+            content: "—";
+            color: red;
+            padding-right: 10px;
+        }
+        .project-details {
+            margin-top: 20px;
+            line-height: 1.8;
+        }
+        .project-details span {
+            font-weight: bold;
+        }
+        .page-break {
+            margin: 40px 0;
+            border-top: 2px solid #ccc;
+        }
+        .editable-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            white-space: pre-wrap;
+            font-family: Arial, sans-serif;
+            font-size: 1em;
+            line-height: 1.6;
+            height: 600px;
+            overflow: auto;
+            background-color: #fdfdfd;
+        }
+        .right-align {
+            text-align: right;
+            line-height: 1.6;
+        }
+        .left-align {
+            text-align: left;
+            line-height: 1.6;
+        }
+        .justify {
+            text-align: justify;
+            line-height: 1.6;
+        }
+        .indent {
+            margin-left: 20px;
+        }
+        .timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: red;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        .submit-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: black;
+            color: white;
+            border: none;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            width: 300px;
+        }
+        .modal-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        .modal-buttons button {
+            margin: 10px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .submit-confirm {
+            background-color: black;
+            color: white;
+        }
+        .cancel-btn {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <!-- Timer -->
+    <div class="timer" id="timer">20:00</div>
+
+    <!-- Page 1: Instructions -->
+    <div class="container">
+        <!-- Title -->
+        <div class="title">PROOFING TEST 1</div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <p>Please read the following instructions carefully. Ensure you understand what is required before you begin. Following instructions is an important part of being a Toot Sweeter.</p>
+            <p>Please proofread this letter. Check for errors in:</p>
+            <ul>
+                <li>Punctuation</li>
+                <li>Spelling (NB: we prefer ‘-ise’ over the Oxford English ‘-ize’ endings)</li>
+                <li>Capitalisation</li>
+                <li>Individual and organisational names and details are fictitious, but still check the spelling.</li>
+            </ul>
+            <p>As our client is happy with the wording, the focus should be on proofing and picking up every single mistake you can.</p>
+        </div>
+
+        <!-- Project and Client Details -->
+        <div class="project-details">
+            <span>Project name:</span> Road Maintenance Contracts (RMCs)<br>
+            <span>Client:</span> Road Engineering Services (RES)
+        </div>
+    </div>
+
+    <!-- Page Break -->
+    <div class="page-break"></div>
+
+<!-- Page 2: Editable Area -->
+<div class="container">
+<div contenteditable="true" class="editable-box">
+<div class="right-align">
+Infrastructure Solutions Pty ltd  
+ABN 12 345 678 910  
+307 George Street  
+Sydney  
+Nsw 2000
+</div>
+<div class="justify indent">
+14 July 2014<br><br>  
+Ms Susan Anderson  
+Cheif Executive  
+Road Engineering Services  
+Level 9, 101 Miller Street  
+North Sydney NSW 2060<br>
+
+Dear Sir,<br>
+
+<b>REQUEST FOR PROPOSALS: ROAD MAINTENANCE CONTRACTS – sydney (Ref: 37TRV)</b>
+Infrastructure Solutions is pleased to submit our proposal for the Road Maintenance Contract (RMC).<br>  
+Our proposal includes:  
+<span style="color: red;">—</span> One original copy and five copies of our proposal, including the Pricing Schedules which have been presented in a separate volume.  
+<span style="color: red;">—</span> One electronic copy of our proposal in portable document format (PDF) on DVD, including the Pricing Schedules in PDF and MS Excel file formats, which are presented on a separate DVD.
+
+We welcome the chance to build on our work with RES after working together on the recent, successful Barkingheads Overpass and the Franklin Paradise Duplication projects that were delivered, before time and under budget with no safety incidents. We specialize in road building and maintenance projects – we currently have 5 such projects in NSW including two in Sydney, worth collectively over AU$1 billion.
+
+We trust that our proposal is in accordance with the requirements of Road Engineering Services request for proposals. If you require any additional information or clarification please contact David Lee-Stephens, Bid Director on 0431 256 789 or david.lee-stevens@is.com.au.
+
+We look forward to meeting your program team at the upcoming Proponents’ Team Evaluation Workshop and to continue to work with RES to make NSW’s road infrastructure better, safer and more reliable for everyone.
+
+Yours Sincerely,<br>  
+Ms Gina Hollyford  
+Executive General Manger  
+Infrastructure Solutions
+</div>
+</div>
+        <!-- Submit Button -->
+        <button class="submit-btn" onclick="openModal()">Submit</button>
+    </div>
+
+    <!-- Custom Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-title">Toot Sweet Assessment</div>
+            <p id="modal-message">Are you sure you want to submit? You still have 20:00 left to finish the test.</p>
+            <div class="modal-buttons">
+                <button class="submit-confirm" onclick="submitTest()">Submit</button>
+                <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timer Script -->
+<script>
+    const timerDisplay = document.getElementById('timer');
+    const modal = document.getElementById('modal'); // For submit confirmation
+    const exitModal = document.createElement('div'); // Custom modal for exit warning
+    const totalTime = 20 * 60; // 20 minutes in seconds
+    let testSubmitted = false;
+
+    // Initialize the exit modal
+    function initializeExitModal() {
+        exitModal.classList.add('modal');
+        exitModal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-title">Warning</div>
+                <p>Exiting this page will automatically submit your assessment, and it cannot be retaken. Do you want to continue?</p>
+                <div class="modal-buttons">
+                    <button class="submit-confirm" onclick="confirmExit()">Exit Test</button>
+                    <button class="cancel-btn" onclick="closeExitModal()">Stay on Page</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(exitModal);
+    }
+
+    // Show the exit modal
+    function showExitModal() {
+        exitModal.style.display = 'flex';
+    }
+
+    // Close the exit modal
+    function closeExitModal() {
+        exitModal.style.display = 'none';
+    }
+
+    // Confirm exit and submit test
+    function confirmExit() {
+        submitTest(); // Submit the test
+        window.removeEventListener('beforeunload', warnBeforeUnload); // Prevent further warnings
+        window.location.href = 'thank_you.html'; // Redirect to a thank-you page
+    }
+
+    // Timer logic
+    function initializeTimer() {
+        const email = localStorage.getItem('currentEmail');
+        const submissionKey = `submitted_${email}`;
+        const startTimeKey = `startTime_${email}`;
+
+        if (localStorage.getItem(submissionKey)) {
+            document.body.innerHTML = `<h2 style='text-align:center; margin-top: 20%;'>You have already submitted the test for the email: ${email}. Thank you.</h2>`;
+            return;
+        }
+
+        let currentTime = Math.floor(Date.now() / 1000);
+
+        if (!localStorage.getItem(startTimeKey)) {
+            localStorage.setItem(startTimeKey, currentTime);
+        }
+
+        const testStartTime = parseInt(localStorage.getItem(startTimeKey), 10);
+        let elapsedTime = currentTime - testStartTime;
+        let timeLeft = totalTime - elapsedTime;
+
+        if (timeLeft <= 0) {
+            submitTest(email);
+            return;
+        }
+
+        const timer = setInterval(() => {
+            currentTime = Math.floor(Date.now() / 1000);
+            elapsedTime = currentTime - testStartTime;
+            timeLeft = totalTime - elapsedTime;
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                submitTest(email);
+                return;
+            }
+
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+        }, 1000);
+    }
+
+    // Save assessment results
+    function saveAssessmentResult(email, content) {
+        const currentDate = new Date();
+        const timestamp = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}_${currentDate.getHours().toString().padStart(2, '0')}-${currentDate.getMinutes().toString().padStart(2, '0')}-${currentDate.getSeconds().toString().padStart(2, '0')}`;
+        const fileName = `Assessment_${email}_${timestamp}.txt`;
+        const blob = new Blob([content], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName;
+        link.click();
+    }
+
+    // Submit test
+    function submitTest() {
+        if (!testSubmitted) {
+            const email = localStorage.getItem('currentEmail');
+            const submissionKey = `submitted_${email}`;
+            const startTimeKey = `startTime_${email}`;
+
+            testSubmitted = true;
+            localStorage.setItem(submissionKey, true);
+            localStorage.removeItem(startTimeKey);
+
+            // Save the result
+            const assessmentContent = document.querySelector('.editable-box').innerText;
+            saveAssessmentResult(email, assessmentContent);
+
+            modal.style.display = 'none';
+
+            document.body.innerHTML = `
+    <div style="text-align: center; margin-top: 20%;">
+        <h1 style="font-size: 2.5em;">Thank you!</h1>
+        <p style="font-size: 1.2em;">Your Assessment has been recorded.</p>
+    </div>
+`;
+        }
+    }
+
+    // Add warning when leaving the page
+    function warnBeforeUnload(event) {
+        showExitModal(); // Show custom exit modal
+        event.preventDefault();
+        event.returnValue = ''; // Prevent browser default behaviour
+    }
+
+    // Handle the submit button click
+    function openModal() {
+        const email = localStorage.getItem('currentEmail');
+        const startTimeKey = `startTime_${email}`;
+        const testStartTime = parseInt(localStorage.getItem(startTimeKey), 10);
+        const currentTime = Math.floor(Date.now() / 1000);
+        const timeLeft = totalTime - (currentTime - testStartTime);
+
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+
+        const modalMessage = document.getElementById('modal-message');
+        modalMessage.textContent = `Are you sure you want to submit? You still have ${minutes}:${seconds < 10 ? '0' + seconds : seconds} left to finish the test.`;
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
+    // Initialize modals and timer
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeTimer();
+        initializeExitModal();
+
+        // Block closing tab or reloading page
+        window.addEventListener('beforeunload', warnBeforeUnload);
+
+        // Prevent back navigation
+        window.addEventListener('popstate', (event) => {
+            showExitModal();
+            history.pushState(null, null, location.href); // Prevent navigation away
+        });
+    });
+</script>
+</body>
+</html>
