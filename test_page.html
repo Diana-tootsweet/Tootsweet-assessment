@@ -210,7 +210,7 @@ Executive General Manger
 Infrastructure Solutions
 </div>
 </div>
-    <!-- Submit Button -->
+   <!-- Submit Button -->
 <button class="submit-btn" onclick="openModal()">Submit</button>
 
 <!-- Custom Modal -->
@@ -234,14 +234,30 @@ Infrastructure Solutions
     let testSubmitted = false;
     let timer;
 
-    // Retrieve email from sessionStorage
+    // Retrieve email and name from sessionStorage
     const email = sessionStorage.getItem("email");
     const name = sessionStorage.getItem("name");
 
-    // If email is not found, redirect back to the identity page
+    // If email or name is missing, redirect to the identity page
     if (!email || !name) {
         alert("You must enter your name and email to access this page.");
         window.location.href = "page2.html"; // Redirect back to the identity page
+    }
+
+    // Prevent back navigation
+    function preventBackNavigation() {
+        history.pushState(null, null, location.href);
+        window.addEventListener("popstate", () => {
+            alert("Navigating back will auto-submit your assessment.");
+            submitTest();
+        });
+    }
+
+    // Warn before exit or refresh
+    function warnBeforeUnload(event) {
+        if (testSubmitted) return; // Skip if already submitted
+        event.preventDefault();
+        event.returnValue = "Are you sure you want to exit? Your assessment will be automatically submitted.";
     }
 
     // Initialize Timer
@@ -344,27 +360,11 @@ Infrastructure Solutions
         }
     }
 
-    // Exit Warning
-    function warnBeforeUnload(event) {
-        if (testSubmitted) return;
-        event.preventDefault();
-        event.returnValue = "Are you sure you want to exit? Your assessment will be automatically submitted.";
-    }
-
-    // Prevent Back Navigation
-    function preventBackNavigation() {
-        history.pushState(null, null, location.href);
-        window.addEventListener("popstate", () => {
-            alert("Navigating back will auto-submit your assessment.");
-            submitTest();
-        });
-    }
-
     // Initialize Timer and Bind Events
     document.addEventListener("DOMContentLoaded", () => {
         initializeTimer();
-        window.addEventListener("beforeunload", warnBeforeUnload);
         preventBackNavigation();
+        window.addEventListener("beforeunload", warnBeforeUnload);
     });
 </script>
 </body>
