@@ -91,17 +91,23 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .confirm-btn {
+            background-color: #2196F3;
+            color: white;
+        }
+        .cancel-btn {
+            background-color: #f44336;
+            color: white;
+        }
     </style>
 </head>
 <body>
     <!-- Timer -->
     <div class="timer" id="timer">21:00</div>
-    
-<div class="container">
-    <!-- Title -->
-    <div class="title">PROOFING TEST 1</div>
 
-    <!-- Instructions -->
+    <div class="container">
+        <div class="title">PROOFING TEST 1</div>
+         <!-- Instructions -->
     <div class="instructions">
         <p>Please read the following instructions carefully. Ensure you understand what is required before you begin. Following instructions is an important part of being a Toot Sweeter.</p>
         <p>Please proofread this letter. Check for errors in:</p>
@@ -127,79 +133,95 @@
     <div contenteditable="true" class="editable-box">
         <!-- Company Address Aligned to the Right -->
         <div style="text-align: right; margin-bottom: 20px;">
-            Infrastructure Solutions Pty ltd
-            ABN 12 345 678 910
-            307 George Street
-            Sydney
-            Nsw 2000
+            Infrastructure Solutions Pty ltd<br>
+            ABN 12 345 678 910<br>
+            307 George Street<br>
+            Sydney<br>
+            NSW 2000
         </div>
-<!-- Date -->
-        <div style="margin: 0; padding: 0;">14 July 2014</div>
+
+        <!-- Date -->
+        <div style="margin-bottom: 20px;">
+            14 July 2014
+        </div>
 
         <!-- Recipient Details -->
-        <div style="margin: 0; padding: 0;">
-            Ms Susan Anderson  
-            Cheif Executive  
-            Road Engineering Services  
-            Level 9, 101 Miller street  
+        <div style="margin-bottom: 20px;">
+            Ms Susan Anderson<br>
+            Chief Executive<br>
+            Road Engineering Services<br>
+            Level 9, 101 Miller Street<br>
             North Sydney NSW 2060
         </div>
 
         <!-- Opening Greeting -->
-        <div style="margin: 0; padding: 0;">Dear Sir,</div>
+        <div style="margin-bottom: 20px;">
+            Dear Sir,
+        </div>
 
         <!-- Subject Line -->
-        <div style="margin: 0; padding: 0;">
-            <b>REQUEST FOR PROPOSALS: ROAD MAINTENANCE CONTRACTS – sydney (Ref: 37TRV)</b>
+        <div style="margin-bottom: 20px;">
+            <b>REQUEST FOR PROPOSALS: ROAD MAINTENANCE CONTRACTS – Sydney (Ref: 37TRV)</b>
         </div>
 
         <!-- Main Content -->
-        <div style="margin: 0; padding: 0;">
-            Infrastructure Solutions is pleased to submit our proposal for the Road Maintenance Contract (RMC).
-        </div>
-
-        <div style="margin: 0; padding: 0;">
+        <div style="text-align: justify; margin-bottom: 20px;">
+            Infrastructure Solutions is pleased to submit our proposal for the Road Maintenance Contract (RMC).<br><br>
             Our proposal includes:
-            <ul style="list-style-type: disc; margin: 0; padding-left: 20px;">
-                <li style="margin: 0; padding: 0;"><span style="color: red;">—</span>— One original copy and five copies of our proposal, including the Pricing Schedules which have been presented in a separate volume.</li>
-                <li style="margin: 0; padding: 0;"><span style="color: red;">—</span>— One electronic copy of our proposal in portable document format (PDF) on DVD, including the Pricing Schedules in PDF and MS Excel file formats, which are presented on a separate DVD.</li>
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li style="margin-bottom: 10px;">— One original copy and five copies of our proposal, including the Pricing Schedules which have been presented in a separate volume.</li>
+                <li style="margin-bottom: 10px;">— One electronic copy of our proposal in portable document format (PDF) on DVD, including the Pricing Schedules in PDF and MS Excel file formats, which are presented on a separate DVD.</li>
             </ul>
-        </div>
-
-        <div style="margin: 0; padding: 0;">
-            We welcome the chance to build on our work with RES after working together on the recent, successful Barking heads Overpass and the Franklin Paradise Duplication projects that were delivered, before time and under budget with no safety incidents. We specialize in road building and maintenance projects – we currently have 5 such projects in NSW including two in Sydney, worth collectively over AU$1 billion.
-        </div>
-
-        <div style="margin: 0; padding: 0;">
-            We trust that our proposal is in accordance with the requirements of Road Engineering Services request for proposals. If you require any additional information or clarification please contact David Lee-Stephens, Bid Director on 0431 256 789 or david.lee-stevens@is.com.au.
-        </div>
-
-        <div style="margin: 0; padding: 0;">
-            We look forward to meeting you program team an the upcoming Proponents’ Team Evaluation Workshop and to continue to work with RES to make NSW’s road infrastructure better, safer and more reliable for everyone.
+            We welcome the chance to build on our work with RES after working together on the recent, successful Barkingheads Overpass and the Franklin Paradise Duplication projects that were delivered before time and under budget with no safety incidents. We specialize in road building and maintenance projects – we currently have 5 such projects in NSW, including two in Sydney, worth collectively over AU$1 billion.<br><br>
+            We trust that our proposal is in accordance with the requirements of Road Engineering Services' request for proposals. If you require any additional information or clarification, please contact David Lee-Stephens, Bid Director, on 0431 256 789 or david.lee-stevens@is.com.au.<br><br>
+            We look forward to meeting your program team at the upcoming Proponents’ Team Evaluation Workshop and to continue working with RES to make NSW’s road infrastructure better, safer, and more reliable for everyone.
         </div>
 
         <!-- Closing -->
-        <div style="margin: 0; padding: 0;">Yours Sincerely,</div>
+        <div style="margin-bottom: 20px;">
+            Yours Sincerely,
+        </div>
 
-        <!-- Sender Details -->
-        <div style="margin: 0; padding: 0;">
-            Ms Gina Hollyford  
-            Executive General Manger  
+        <!-- Sign-off -->
+        <div>
+            Ms Gina Hollyford<br>
+            Executive General Manager<br>
             Infrastructure Solutions
         </div>
     </div>
 </div>
+    <!-- Confirmation Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <p id="modal-message"></p>
+            <div class="modal-buttons">
+                <button class="confirm-btn" onclick="submitTest()">Yes, Submit</button>
+                <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exit Modal -->
+    <div class="modal" id="exit-modal">
+        <div class="modal-content">
+            <p>Are you sure you want to exit? Your assessment will be automatically submitted when you do.</p>
+            <div class="modal-buttons">
+                <button class="confirm-btn" onclick="submitTest()">Yes, Exit and Submit</button>
+                <button class="cancel-btn" onclick="closeExitModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const timerDisplay = document.getElementById('timer');
         const modal = document.getElementById('modal');
+        const exitModal = document.getElementById('exit-modal');
         const modalMessage = document.getElementById('modal-message');
-        let totalTime = 21 * 60; // Timer set to 21 minutes
+        let totalTime = localStorage.getItem('remainingTime') 
+            ? parseInt(localStorage.getItem('remainingTime')) 
+            : 21 * 60; // Timer set to 21 minutes
         let remainingTime = totalTime;
         let timer;
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const name = urlParams.get('name') || "Anonymous";
-        const email = urlParams.get('email') || "unknown@example.com";
 
         function initializeTimer() {
             timer = setInterval(() => {
@@ -208,6 +230,9 @@
 
                 timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
                 remainingTime--;
+
+                // Save the timer progress in local storage
+                localStorage.setItem('remainingTime', remainingTime);
 
                 if (remainingTime < 0) {
                     clearInterval(timer);
@@ -228,48 +253,34 @@
             modal.style.display = 'none';
         }
 
+        function openExitModal() {
+            exitModal.style.display = 'flex';
+        }
+
+        function closeExitModal() {
+            exitModal.style.display = 'none';
+        }
+
         async function submitTest() {
             clearInterval(timer);
 
             const assessmentContent = document.querySelector('.editable-box').innerText.trim();
-            const timeSpent = `${Math.floor((totalTime - remainingTime) / 60)} minutes ${remainingTime % 60} seconds`;
-
             if (!assessmentContent) {
                 alert("The text box cannot be empty. Please edit the content before submitting.");
                 return;
             }
 
-            const payload = {
-                name: name,
-                email: email,
-                edited_text: assessmentContent,
-                time_spent: timeSpent
-            };
-
-            try {
-                const response = await fetch('https://assessment-responses.onrender.com/submit', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (response.ok) {
-                    alert("Your test has been submitted successfully!");
-                    document.body.innerHTML = `
-                        <div style="text-align: center; margin-top: 20%;">
-                            <h1 style="font-size: 2.5em;">Thank you!</h1>
-                            <p style="font-size: 1.2em;">Your assessment has been recorded.</p>
-                        </div>
-                    `;
-                } else {
-                    alert("Submission failed. Please try again.");
-                }
-            } catch (error) {
-                alert(`An error occurred: ${error.message}`);
-            }
-
+            alert("Your response has been successfully submitted!");
+            localStorage.removeItem('remainingTime'); // Clear timer from storage
+            exitModal.style.display = 'none';
             modal.style.display = 'none';
         }
+
+        // Warn the user before they refresh or leave the page
+        window.onbeforeunload = (event) => {
+            openExitModal();
+            return "Are you sure you want to exit?";
+        };
 
         document.addEventListener('DOMContentLoaded', initializeTimer);
     </script>
