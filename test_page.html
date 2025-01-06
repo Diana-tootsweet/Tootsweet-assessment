@@ -210,7 +210,7 @@ Executive General Manger
 Infrastructure Solutions
 </div>
 </div>
-      <!-- Submit Button -->
+    <!-- Submit Button -->
 <button class="submit-btn" onclick="openModal()">Submit</button>
 
 <!-- Custom Modal -->
@@ -234,26 +234,14 @@ Infrastructure Solutions
     let testSubmitted = false;
     let timer;
 
-    // Check if email already exists in sessionStorage
-    let email = sessionStorage.getItem("currentEmail");
+    // Retrieve email from sessionStorage
+    const email = sessionStorage.getItem("email");
+    const name = sessionStorage.getItem("name");
 
-    // If email is not found, prompt the user
-    if (!email) {
-        email = prompt("Enter your email to begin the assessment:");
-        if (!email || email.trim() === "") {
-            alert("Email is required to take the assessment.");
-            document.body.innerHTML = "<h2 style='text-align:center; margin-top: 20%;'>Email is required. Please refresh to try again.</h2>";
-            throw new Error("Email is required.");
-        }
-
-        // Check if the email has already submitted
-        if (sessionStorage.getItem(`submitted_${email}`)) {
-            document.body.innerHTML = `<h2 style='text-align:center; margin-top: 20%;'>You have already submitted the test for the email: ${email}. Thank you.</h2>`;
-            throw new Error("Test already submitted for this email.");
-        }
-
-        // Save email to sessionStorage
-        sessionStorage.setItem("currentEmail", email);
+    // If email is not found, redirect back to the identity page
+    if (!email || !name) {
+        alert("You must enter your name and email to access this page.");
+        window.location.href = "page2.html"; // Redirect back to the identity page
     }
 
     // Initialize Timer
@@ -328,10 +316,15 @@ Infrastructure Solutions
 
         // Send response to the backend
         try {
-            const response = await fetch("https://your-backend-endpoint.com/submit", {
+            const response = await fetch("https://assessment-responses.onrender.com/submit", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, content: assessmentContent }),
+                body: JSON.stringify({
+                    email,
+                    name,
+                    content: assessmentContent,
+                    submittedAt: new Date().toISOString(),
+                }),
             });
 
             if (response.ok) {
