@@ -233,15 +233,6 @@ Infrastructure Solutions
     const totalTime = 21 * 60; // 21 minutes in seconds
     let testSubmitted = false;
     let timer;
-
-    // Prompt for email
-    const email = prompt("Enter your email to begin the assessment:");
-
-    // Check if email is valid and allowed
-    if (!email || email === "") {
-        alert("Email is required to take the assessment.");
-        document.body.innerHTML = "<h2 style='text-align:center; margin-top: 20%;'>Email is required. Please refresh to try again.</h2>";
-        throw new Error("Email is required.");
     }
 
     // Restrict retakes for the same email
