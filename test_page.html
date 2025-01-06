@@ -210,184 +210,144 @@ Executive General Manger
 Infrastructure Solutions
 </div>
 </div>
-        <!-- Submit Button -->
-        <button class="submit-btn" onclick="openModal()">Submit</button>
-    </div>
-
-    <!-- Custom Modal -->
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <div class="modal-title">Toot Sweet Assessment</div>
-            <p id="modal-message">Are you sure you want to submit? You still have 20:00 left to finish the test.</p>
-            <div class="modal-buttons">
-                <button class="submit-confirm" onclick="submitTest()">Submit</button>
-                <button class="cancel-btn" onclick="closeModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Timer Script -->
-<script>
+        <script>
     const timerDisplay = document.getElementById('timer');
-    const modal = document.getElementById('modal'); // For submit confirmation
-    const exitModal = document.createElement('div'); // Custom modal for exit warning
+    const modal = document.getElementById('modal'); // Submit confirmation modal
+    const modalMessage = document.getElementById('modal-message');
     const totalTime = 20 * 60; // 20 minutes in seconds
     let testSubmitted = false;
+    let timer;
 
-    // Initialize the exit modal
-    function initializeExitModal() {
-        exitModal.classList.add('modal');
-        exitModal.innerHTML = `
-            <div class="modal-content">
-                <div class="modal-title">Warning</div>
-                <p>Exiting this page will automatically submit your assessment, and it cannot be retaken. Do you want to continue?</p>
-                <div class="modal-buttons">
-                    <button class="submit-confirm" onclick="confirmExit()">Exit Test</button>
-                    <button class="cancel-btn" onclick="closeExitModal()">Stay on Page</button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(exitModal);
+    // Prompt for email
+    const email = prompt("Enter your email to begin the assessment:");
+
+    // Check if email is valid and allowed
+    if (!email || email === "") {
+        alert("Email is required to take the assessment.");
+        document.body.innerHTML = "<h2 style='text-align:center; margin-top: 20%;'>Email is required. Please refresh to try again.</h2>";
+        throw new Error("Email is required.");
     }
 
-    // Show the exit modal
-    function showExitModal() {
-        exitModal.style.display = 'flex';
+    // Restrict retakes for the same email
+    if (sessionStorage.getItem(`submitted_${email}`)) {
+        document.body.innerHTML = `<h2 style='text-align:center; margin-top: 20%;'>You have already submitted the test for the email: ${email}. Thank you.</h2>`;
+        throw new Error("Test already submitted for this email.");
     }
 
-    // Close the exit modal
-    function closeExitModal() {
-        exitModal.style.display = 'none';
-    }
-
-    // Confirm exit and submit test
-    function confirmExit() {
-        submitTest(); // Submit the test
-        window.removeEventListener('beforeunload', warnBeforeUnload); // Prevent further warnings
-        window.location.href = 'thank_you.html'; // Redirect to a thank-you page
-    }
-
-    // Timer logic
+    // Initialize Timer
     function initializeTimer() {
-        const email = localStorage.getItem('currentEmail');
-        const submissionKey = `submitted_${email}`;
-        const startTimeKey = `startTime_${email}`;
+        const startTime = sessionStorage.getItem(`startTime_${email}`)
+            ? parseInt(sessionStorage.getItem(`startTime_${email}`))
+            : Date.now();
+        sessionStorage.setItem(`startTime_${email}`, startTime);
 
-        if (localStorage.getItem(submissionKey)) {
-            document.body.innerHTML = `<h2 style='text-align:center; margin-top: 20%;'>You have already submitted the test for the email: ${email}. Thank you.</h2>`;
+        const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+        let remainingTime = totalTime - elapsedTime;
+
+        if (remainingTime <= 0) {
+            submitTest();
             return;
         }
 
-        let currentTime = Math.floor(Date.now() / 1000);
+        updateTimerDisplay(remainingTime);
 
-        if (!localStorage.getItem(startTimeKey)) {
-            localStorage.setItem(startTimeKey, currentTime);
-        }
+        timer = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            remainingTime = totalTime - elapsed;
 
-        const testStartTime = parseInt(localStorage.getItem(startTimeKey), 10);
-        let elapsedTime = currentTime - testStartTime;
-        let timeLeft = totalTime - elapsedTime;
-
-        if (timeLeft <= 0) {
-            submitTest(email);
-            return;
-        }
-
-        const timer = setInterval(() => {
-            currentTime = Math.floor(Date.now() / 1000);
-            elapsedTime = currentTime - testStartTime;
-            timeLeft = totalTime - elapsedTime;
-
-            if (timeLeft <= 0) {
+            if (remainingTime <= 0) {
                 clearInterval(timer);
-                submitTest(email);
+                submitTest();
                 return;
             }
 
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+            updateTimerDisplay(remainingTime);
         }, 1000);
     }
 
-    // Save assessment results
-    function saveAssessmentResult(email, content) {
-        const currentDate = new Date();
-        const timestamp = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}_${currentDate.getHours().toString().padStart(2, '0')}-${currentDate.getMinutes().toString().padStart(2, '0')}-${currentDate.getSeconds().toString().padStart(2, '0')}`;
-        const fileName = `Assessment_${email}_${timestamp}.txt`;
-        const blob = new Blob([content], { type: 'text/plain' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = fileName;
-        link.click();
+    // Update Timer Display
+    function updateTimerDisplay(remainingTime) {
+        const minutes = Math.floor(remainingTime / 60);
+        const seconds = remainingTime % 60;
+        timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
     }
 
-    // Submit test
-    function submitTest() {
-        if (!testSubmitted) {
-            const email = localStorage.getItem('currentEmail');
-            const submissionKey = `submitted_${email}`;
-            const startTimeKey = `startTime_${email}`;
-
-            testSubmitted = true;
-            localStorage.setItem(submissionKey, true);
-            localStorage.removeItem(startTimeKey);
-
-            // Save the result
-            const assessmentContent = document.querySelector('.editable-box').innerText;
-            saveAssessmentResult(email, assessmentContent);
-
-            modal.style.display = 'none';
-
-            document.body.innerHTML = `
-    <div style="text-align: center; margin-top: 20%;">
-        <h1 style="font-size: 2.5em;">Thank you!</h1>
-        <p style="font-size: 1.2em;">Your Assessment has been recorded.</p>
-    </div>
-`;
-        }
-    }
-
-    // Add warning when leaving the page
-    function warnBeforeUnload(event) {
-        showExitModal(); // Show custom exit modal
-        event.preventDefault();
-        event.returnValue = ''; // Prevent browser default behaviour
-    }
-
-    // Handle the submit button click
+    // Open Submit Confirmation Modal
     function openModal() {
-        const email = localStorage.getItem('currentEmail');
-        const startTimeKey = `startTime_${email}`;
-        const testStartTime = parseInt(localStorage.getItem(startTimeKey), 10);
-        const currentTime = Math.floor(Date.now() / 1000);
-        const timeLeft = totalTime - (currentTime - testStartTime);
+        const elapsedTime = Math.floor((Date.now() - parseInt(sessionStorage.getItem(`startTime_${email}`))) / 1000);
+        const remainingTime = totalTime - elapsedTime;
 
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
+        const minutes = Math.floor(remainingTime / 60);
+        const seconds = remainingTime % 60;
 
-        const modalMessage = document.getElementById('modal-message');
         modalMessage.textContent = `Are you sure you want to submit? You still have ${minutes}:${seconds < 10 ? '0' + seconds : seconds} left to finish the test.`;
         modal.style.display = 'flex';
     }
 
+    // Close Modal
     function closeModal() {
         modal.style.display = 'none';
     }
 
-    // Initialize modals and timer
-    document.addEventListener('DOMContentLoaded', () => {
-        initializeTimer();
-        initializeExitModal();
+    // Submit Test
+    async function submitTest() {
+        if (testSubmitted) return;
 
-        // Block closing tab or reloading page
-        window.addEventListener('beforeunload', warnBeforeUnload);
+        testSubmitted = true;
+        const assessmentContent = document.querySelector('.editable-box').innerText.trim();
 
-        // Prevent back navigation
-        window.addEventListener('popstate', (event) => {
-            showExitModal();
-            history.pushState(null, null, location.href); // Prevent navigation away
+        if (!assessmentContent) {
+            alert("Your assessment cannot be empty. Please complete the test before submitting.");
+            testSubmitted = false;
+            return;
+        }
+
+        // Send response to the backend
+        try {
+            const response = await fetch("https://your-backend-endpoint.com/submit", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, content: assessmentContent }),
+            });
+
+            if (response.ok) {
+                sessionStorage.setItem(`submitted_${email}`, true);
+                alert("Your assessment has been successfully submitted!");
+                document.body.innerHTML = `
+                    <div style="text-align: center; margin-top: 20%;">
+                        <h1 style="font-size: 2.5em;">Thank you!</h1>
+                        <p style="font-size: 1.2em;">Your assessment has been recorded.</p>
+                    </div>
+                `;
+            } else {
+                alert("Submission failed. Please try again.");
+            }
+        } catch (error) {
+            alert("An error occurred while submitting your assessment. Please try again.");
+        }
+    }
+
+    // Exit Warning
+    function warnBeforeUnload(event) {
+        if (testSubmitted) return;
+        event.preventDefault();
+        event.returnValue = "Are you sure you want to exit? Your assessment will be automatically submitted.";
+    }
+
+    // Prevent Back Navigation
+    function preventBackNavigation() {
+        history.pushState(null, null, location.href);
+        window.addEventListener("popstate", () => {
+            alert("Navigating back will auto-submit your assessment.");
+            submitTest();
         });
+    }
+
+    // Initialize Timer and Bind Events
+    document.addEventListener("DOMContentLoaded", () => {
+        initializeTimer();
+        window.addEventListener("beforeunload", warnBeforeUnload);
+        preventBackNavigation();
     });
 </script>
 </body>
