@@ -32,26 +32,6 @@
             text-align: justify;
             line-height: 1.6;
         }
-        .instructions ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-        .instructions ul li::before {
-            content: "—";
-            color: red;
-            padding-right: 10px;
-        }
-        .project-details {
-            margin-top: 20px;
-            line-height: 1.8;
-        }
-        .project-details span {
-            font-weight: bold;
-        }
-        .page-break {
-            margin: 40px 0;
-            border-top: 2px solid #ccc;
-        }
         .editable-box {
             border: 1px solid #ccc;
             padding: 10px;
@@ -62,17 +42,6 @@
             height: 600px;
             overflow: auto;
             background-color: #fdfdfd;
-        }
-        .right-align {
-            text-align: right;
-            line-height: 1.6;
-        }
-        .justify {
-            text-align: justify;
-            line-height: 1.6;
-        }
-        .indent {
-            margin-left: 20px;
         }
         .timer {
             position: fixed;
@@ -115,11 +84,6 @@
             border-radius: 8px;
             width: 300px;
         }
-        .modal-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-            font-size: 1.2em;
-        }
         .modal-buttons button {
             margin: 10px;
             padding: 8px 16px;
@@ -127,19 +91,12 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        .submit-confirm {
-            background-color: black;
-            color: white;
-        }
-        .cancel-btn {
-            background-color: #ccc;
-        }
     </style>
 </head>
 <body>
     <!-- Timer -->
     <div class="timer" id="timer">21:00</div>
-
+    
     <!-- Page 1: Instructions -->
     <div class="container">
         <!-- Title -->
@@ -206,17 +163,16 @@ Executive General Manger
 Infrastructure Solutions
 </div>
 </div>
-        <button class="submit-btn" onclick="openModal()">Submit</button>
+     <button class="submit-btn" onclick="openModal()">Submit</button>
     </div>
 
     <!-- Modal -->
     <div class="modal" id="modal">
         <div class="modal-content">
-            <div class="modal-title">Toot Sweet Assessment</div>
-            <p id="modal-message">Are you sure you want to submit?</p>
+            <p>Are you sure you want to submit?</p>
             <div class="modal-buttons">
-                <button class="submit-confirm" onclick="submitTest()">Submit</button>
-                <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+                <button onclick="submitTest()">Yes</button>
+                <button onclick="closeModal()">No</button>
             </div>
         </div>
     </div>
@@ -224,81 +180,88 @@ Infrastructure Solutions
     <script>
         const timerDisplay = document.getElementById('timer');
         const modal = document.getElementById('modal');
-        const totalTime = 21 * 60; // Timer set to 21 minutes (1260 seconds)
-        let testSubmitted = false;
+        let totalTime = 21 * 60; // Timer set to 21 minutes
+        let remainingTime = totalTime;
+        let timer;
 
+        // Get name and email dynamically from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = urlParams.get('name') || "Anonymous";
+        const email = urlParams.get('email') || "unknown@example.com";
+
+        // Initialize Timer
         function initializeTimer() {
-            const startTimeKey = `startTime`;
-            const startTime = localStorage.getItem(startTimeKey) || Math.floor(Date.now() / 1000);
-            localStorage.setItem(startTimeKey, startTime);
+            timer = setInterval(() => {
+                const minutes = Math.floor(remainingTime / 60);
+                const seconds = remainingTime % 60;
 
-            const timer = setInterval(() => {
-                const currentTime = Math.floor(Date.now() / 1000);
-                const elapsedTime = currentTime - startTime;
-                const timeLeft = totalTime - elapsedTime;
-
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    submitTest();
-                    return;
-                }
-
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
                 timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+                remainingTime--;
+
+                if (remainingTime < 0) {
+                    clearInterval(timer);
+                    alert("Time is up! Submitting the test automatically.");
+                    submitTest();
+                }
             }, 1000);
         }
 
-        async function submitTest() {
-            if (!testSubmitted) {
-                const email = localStorage.getItem('currentEmail') || "example@email.com";
-                const name = localStorage.getItem('currentName') || "Example Name";
-                const assessmentContent = document.querySelector('.editable-box').innerText.trim();
-
-                const payload = {
-                    name: name,
-                    email: email,
-                    edited_text: assessmentContent,
-                    time_spent: `${Math.floor((Date.now() - localStorage.getItem('startTime') * 1000) / 60000)} minutes`
-                };
-
-                try {
-                    const response = await fetch('https://assessment-responses.onrender.com/submit', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (response.ok) {
-                        alert("Your assessment has been submitted successfully!");
-                        document.body.innerHTML = `
-                            <div style="text-align: center; margin-top: 20%;">
-                                <h1 style="font-size: 2.5em;">Thank you!</h1>
-                                <p style="font-size: 1.2em;">Your assessment has been recorded.</p>
-                            </div>
-                        `;
-                    } else {
-                        alert(`Submission failed.`);
-                    }
-                } catch (error) {
-                    alert(`An error occurred: ${error.message}`);
-                }
-
-                testSubmitted = true;
-            }
-        }
-
+        // Open Modal
         function openModal() {
             modal.style.display = 'flex';
         }
 
+        // Close Modal
         function closeModal() {
             modal.style.display = 'none';
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeTimer();
-        });
+        // Submit Test
+        async function submitTest() {
+            clearInterval(timer); // Stop the timer
+
+            const assessmentContent = document.querySelector('.editable-box').innerText.trim();
+            const timeSpent = `${Math.floor((totalTime - remainingTime) / 60)} minutes ${remainingTime % 60} seconds`;
+
+            if (!assessmentContent) {
+                alert("The text box cannot be empty. Please edit the content before submitting.");
+                return;
+            }
+
+            const payload = {
+                name: name,
+                email: email,
+                edited_text: assessmentContent,
+                time_spent: timeSpent
+            };
+
+            try {
+                const response = await fetch('https://assessment-responses.onrender.com/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    alert("Your test has been submitted successfully!");
+                    document.body.innerHTML = `
+                        <div style="text-align: center; margin-top: 20%;">
+                            <h1 style="font-size: 2.5em;">Thank you!</h1>
+                            <p style="font-size: 1.2em;">Your assessment has been recorded.</p>
+                        </div>
+                    `;
+                } else {
+                    alert("Submission failed. Please try again.");
+                }
+            } catch (error) {
+                alert(`An error occurred: ${error.message}`);
+            }
+
+            modal.style.display = 'none';
+        }
+
+        // Start Timer on Page Load
+        document.addEventListener('DOMContentLoaded', initializeTimer);
     </script>
 </body>
 </html>
