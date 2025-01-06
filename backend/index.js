@@ -9,6 +9,11 @@ app.use(bodyParser.json());
 // In-memory database for storing submissions (use a real database in production)
 const submissions = [];
 
+// Root route to confirm the backend is running
+app.get("/", (req, res) => {
+    res.send("Backend is live! You can submit your assessment.");
+});
+
 // Route to handle assessment submissions
 app.post("/submit", (req, res) => {
     const { name, email, content, submittedAt } = req.body;
@@ -29,4 +34,3 @@ app.get("/submissions", (req, res) => {
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
