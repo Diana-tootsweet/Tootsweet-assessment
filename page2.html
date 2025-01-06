@@ -90,7 +90,7 @@
     <div class="container">
         <h1>Proofing Test</h1>
         <p>Please enter your identity information</p>
-        <form onsubmit="startTest(event)">
+        <form onsubmit="saveIdentity(event)">
             <label for="fullName">Full Name:</label>
             <input type="text" id="fullName" name="fullName" placeholder="Your Full Name" required>
 
@@ -100,11 +100,12 @@
             <button type="submit" class="button">Submit and Start Assessment</button>
         </form>
     </div>
-    <img src="illustration.png" alt="Illustration" class="illustration">
+    <img src="images/illustration.png" alt="Illustration" class="illustration">
 
     <script>
-        async function startTest(event) {
+        function saveIdentity(event) {
             event.preventDefault();
+
             const name = document.getElementById("fullName").value.trim();
             const email = document.getElementById("email").value.trim();
 
@@ -113,29 +114,12 @@
                 return;
             }
 
-            try {
-                // Submit name and email to the backend
-                const response = await fetch("https://assessment-responses.onrender.com/submit", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ name, email }),
-                });
+            // Save to sessionStorage for use on the next page
+            sessionStorage.setItem("name", name);
+            sessionStorage.setItem("email", email);
 
-                if (response.ok) {
-                    // Save email in sessionStorage
-                    sessionStorage.setItem("currentEmail", email);
-
-                    // Redirect to the test page with name and email as URL parameters
-                    window.location.href = `test_page.html?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`;
-                } else {
-                    const errorData = await response.json();
-                    console.error("Backend Error:", errorData);
-                    alert(`Failed to start the test: ${errorData.message || "Please try again."}`);
-                }
-            } catch (error) {
-                alert("An error occurred while starting the test. Please try again.");
-                console.error("Network or Fetch Error:", error);
-            }
+            // Redirect to the test page
+            window.location.href = "test_page.html";
         }
     </script>
 </body>
