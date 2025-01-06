@@ -210,11 +210,27 @@ Executive General Manger
 Infrastructure Solutions
 </div>
 </div>
-        <script>
+        <!-- Submit Button -->
+<button class="submit-btn" onclick="openModal()">Submit</button>
+
+<!-- Custom Modal -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <div class="modal-title">Toot Sweet Assessment</div>
+        <p id="modal-message">Are you sure you want to submit? You still have 21:00 left to finish the test.</p>
+        <div class="modal-buttons">
+            <button class="submit-confirm" onclick="submitTest()">Submit</button>
+            <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Timer Script -->
+<script>
     const timerDisplay = document.getElementById('timer');
     const modal = document.getElementById('modal'); // Submit confirmation modal
     const modalMessage = document.getElementById('modal-message');
-    const totalTime = 20 * 60; // 20 minutes in seconds
+    const totalTime = 21 * 60; // 21 minutes in seconds
     let testSubmitted = false;
     let timer;
 
@@ -236,11 +252,12 @@ Infrastructure Solutions
 
     // Initialize Timer
     function initializeTimer() {
-        const startTime = sessionStorage.getItem(`startTime_${email}`)
-            ? parseInt(sessionStorage.getItem(`startTime_${email}`))
-            : Date.now();
-        sessionStorage.setItem(`startTime_${email}`, startTime);
+        // Save start time in sessionStorage if not already saved
+        if (!sessionStorage.getItem(`startTime_${email}`)) {
+            sessionStorage.setItem(`startTime_${email}`, Date.now());
+        }
 
+        const startTime = parseInt(sessionStorage.getItem(`startTime_${email}`), 10);
         const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
         let remainingTime = totalTime - elapsedTime;
 
@@ -274,7 +291,8 @@ Infrastructure Solutions
 
     // Open Submit Confirmation Modal
     function openModal() {
-        const elapsedTime = Math.floor((Date.now() - parseInt(sessionStorage.getItem(`startTime_${email}`))) / 1000);
+        const startTime = parseInt(sessionStorage.getItem(`startTime_${email}`), 10);
+        const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
         const remainingTime = totalTime - elapsedTime;
 
         const minutes = Math.floor(remainingTime / 60);
