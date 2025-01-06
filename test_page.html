@@ -32,6 +32,26 @@
             text-align: justify;
             line-height: 1.6;
         }
+        .instructions ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .instructions ul li::before {
+            content: "—";
+            color: red;
+            padding-right: 10px;
+        }
+        .project-details {
+            margin-top: 20px;
+            line-height: 1.8;
+        }
+        .project-details span {
+            font-weight: bold;
+        }
+        .page-break {
+            margin: 40px 0;
+            border-top: 2px solid #ccc;
+        }
         .editable-box {
             border: 1px solid #ccc;
             padding: 10px;
@@ -42,6 +62,21 @@
             height: 600px;
             overflow: auto;
             background-color: #fdfdfd;
+        }
+        .right-align {
+            text-align: right;
+            line-height: 1.6;
+        }
+        .left-align {
+            text-align: left;
+            line-height: 1.6;
+        }
+        .justify {
+            text-align: justify;
+            line-height: 1.6;
+        }
+        .indent {
+            margin-left: 20px;
         }
         .timer {
             position: fixed;
@@ -84,6 +119,11 @@
             border-radius: 8px;
             width: 300px;
         }
+        .modal-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
         .modal-buttons button {
             margin: 10px;
             padding: 8px 16px;
@@ -91,13 +131,12 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        .confirm-btn {
-            background-color: #2196F3;
+        .submit-confirm {
+            background-color: black;
             color: white;
         }
         .cancel-btn {
-            background-color: #f44336;
-            color: white;
+            background-color: #ccc;
         }
     </style>
 </head>
@@ -105,184 +144,251 @@
     <!-- Timer -->
     <div class="timer" id="timer">21:00</div>
 
+    <!-- Page 1: Instructions -->
     <div class="container">
+        <!-- Title -->
         <div class="title">PROOFING TEST 1</div>
-         <!-- Instructions -->
-    <div class="instructions">
-        <p>Please read the following instructions carefully. Ensure you understand what is required before you begin. Following instructions is an important part of being a Toot Sweeter.</p>
-        <p>Please proofread this letter. Check for errors in:</p>
-        <ul style="list-style-type: none; padding-left: 0; line-height: 1.8;">
-            <li><span style="color: red;">—</span> Punctuation</li>
-            <li><span style="color: red;">—</span> Spelling (NB: we prefer ‘-ise’ over the Oxford English ‘-ize’ endings)</li>
-            <li><span style="color: red;">—</span> Capitalisation</li>
-            <li><span style="color: red;">—</span> Individual and organisational names and details are fictitious, but still check the spelling.</li>
-        </ul>
-        <p>As our client is happy with the wording, the focus should be on proofing and picking up every single mistake you can.</p>
-    </div>
 
-    <!-- Project and Client Details -->
-    <div class="project-details" style="margin-top: 20px;">
-        <p><b>Project name:</b> Road Maintenance Contracts (RMCs)</p>
-        <p><b>Client:</b> Road Engineering Services (RES)</p>
-    </div>
-</div>
-<!-- Page Break -->
-<div class="page-break"></div>
-
-<div class="container">
-    <div contenteditable="true" class="editable-box">
-        <!-- Company Address Aligned to the Right -->
-        <div style="text-align: right; margin-bottom: 20px;">
-            Infrastructure Solutions Pty ltd<br>
-            ABN 12 345 678 910<br>
-            307 George Street<br>
-            Sydney<br>
-            NSW 2000
-        </div>
-
-        <!-- Date -->
-        <div style="margin-bottom: 20px;">
-            14 July 2014
-        </div>
-
-        <!-- Recipient Details -->
-        <div style="margin-bottom: 20px;">
-            Ms Susan Anderson<br>
-            Chief Executive<br>
-            Road Engineering Services<br>
-            Level 9, 101 Miller Street<br>
-            North Sydney NSW 2060
-        </div>
-
-        <!-- Opening Greeting -->
-        <div style="margin-bottom: 20px;">
-            Dear Sir,
-        </div>
-
-        <!-- Subject Line -->
-        <div style="margin-bottom: 20px;">
-            <b>REQUEST FOR PROPOSALS: ROAD MAINTENANCE CONTRACTS – Sydney (Ref: 37TRV)</b>
-        </div>
-
-        <!-- Main Content -->
-        <div style="text-align: justify; margin-bottom: 20px;">
-            Infrastructure Solutions is pleased to submit our proposal for the Road Maintenance Contract (RMC).<br><br>
-            Our proposal includes:
-            <ul style="list-style-type: none; padding-left: 0;">
-                <li style="margin-bottom: 10px;">— One original copy and five copies of our proposal, including the Pricing Schedules which have been presented in a separate volume.</li>
-                <li style="margin-bottom: 10px;">— One electronic copy of our proposal in portable document format (PDF) on DVD, including the Pricing Schedules in PDF and MS Excel file formats, which are presented on a separate DVD.</li>
+        <!-- Instructions -->
+        <div class="instructions">
+            <p>Please read the following instructions carefully. Ensure you understand what is required before you begin. Following instructions is an important part of being a Toot Sweeter.</p>
+            <p>Please proofread this letter. Check for errors in:</p>
+            <ul>
+                <li>Punctuation</li>
+                <li>Spelling (NB: we prefer ‘-ise’ over the Oxford English ‘-ize’ endings)</li>
+                <li>Capitalisation</li>
+                <li>Individual and organisational names and details are fictitious, but still check the spelling.</li>
             </ul>
-            We welcome the chance to build on our work with RES after working together on the recent, successful Barkingheads Overpass and the Franklin Paradise Duplication projects that were delivered before time and under budget with no safety incidents. We specialize in road building and maintenance projects – we currently have 5 such projects in NSW, including two in Sydney, worth collectively over AU$1 billion.<br><br>
-            We trust that our proposal is in accordance with the requirements of Road Engineering Services' request for proposals. If you require any additional information or clarification, please contact David Lee-Stephens, Bid Director, on 0431 256 789 or david.lee-stevens@is.com.au.<br><br>
-            We look forward to meeting your program team at the upcoming Proponents’ Team Evaluation Workshop and to continue working with RES to make NSW’s road infrastructure better, safer, and more reliable for everyone.
+            <p>As our client is happy with the wording, the focus should be on proofing and picking up every single mistake you can.</p>
         </div>
 
-        <!-- Closing -->
-        <div style="margin-bottom: 20px;">
-            Yours Sincerely,
-        </div>
-
-        <!-- Sign-off -->
-        <div>
-            Ms Gina Hollyford<br>
-            Executive General Manager<br>
-            Infrastructure Solutions
+        <!-- Project and Client Details -->
+        <div class="project-details">
+            <span>Project name:</span> Road Maintenance Contracts (RMCs)<br>
+            <span>Client:</span> Road Engineering Services (RES)
         </div>
     </div>
+
+    <!-- Page Break -->
+    <div class="page-break"></div>
+
+<!-- Page 2: Editable Area -->
+<div class="container">
+<div contenteditable="true" class="editable-box">
+<div class="right-align">
+Infrastructure Solutions Pty ltd  
+ABN 12 345 678 910  
+307 George Street  
+Sydney  
+Nsw 2000
 </div>
-    <!-- Confirmation Modal -->
+<div class="justify indent">
+14 July 2014<br><br>  
+Ms Susan Anderson  
+Cheif Executive  
+Road Engineering Services  
+Level 9, 101 Miller Street  
+North Sydney NSW 2060<br>
+
+Dear Sir,<br>
+
+<b>REQUEST FOR PROPOSALS: ROAD MAINTENANCE CONTRACTS – sydney (Ref: 37TRV)</b>
+Infrastructure Solutions is pleased to submit our proposal for the Road Maintenance Contract (RMC).<br>  
+Our proposal includes:  
+<span style="color: red;">—</span> One original copy and five copies of our proposal, including the Pricing Schedules which have been presented in a separate volume.  
+<span style="color: red;">—</span> One electronic copy of our proposal in portable document format (PDF) on DVD, including the Pricing Schedules in PDF and MS Excel file formats, which are presented on a separate DVD.
+
+We welcome the chance to build on our work with RES after working together on the recent, successful Barkingheads Overpass and the Franklin Paradise Duplication projects that were delivered, before time and under budget with no safety incidents. We specialize in road building and maintenance projects – we currently have 5 such projects in NSW including two in Sydney, worth collectively over AU$1 billion.
+
+We trust that our proposal is in accordance with the requirements of Road Engineering Services request for proposals. If you require any additional information or clarification please contact David Lee-Stephens, Bid Director on 0431 256 789 or david.lee-stevens@is.com.au.
+
+We look forward to meeting your program team at the upcoming Proponents’ Team Evaluation Workshop and to continue to work with RES to make NSW’s road infrastructure better, safer and more reliable for everyone.
+
+Yours Sincerely,<br>  
+Ms Gina Hollyford  
+Executive General Manger  
+Infrastructure Solutions
+</div>
+</div>
+        <!-- Submit Button -->
+        <button class="submit-btn" onclick="openModal()">Submit</button>
+    </div>
+
+    <!-- Custom Modal -->
     <div class="modal" id="modal">
         <div class="modal-content">
-            <p id="modal-message"></p>
+            <div class="modal-title">Toot Sweet Assessment</div>
+            <p id="modal-message">Are you sure you want to submit? You still have 20:00 left to finish the test.</p>
             <div class="modal-buttons">
-                <button class="confirm-btn" onclick="submitTest()">Yes, Submit</button>
+                <button class="submit-confirm" onclick="submitTest()">Submit</button>
                 <button class="cancel-btn" onclick="closeModal()">Cancel</button>
             </div>
         </div>
     </div>
 
-    <!-- Exit Modal -->
-    <div class="modal" id="exit-modal">
-        <div class="modal-content">
-            <p>Are you sure you want to exit? Your assessment will be automatically submitted when you do.</p>
-            <div class="modal-buttons">
-                <button class="confirm-btn" onclick="submitTest()">Yes, Exit and Submit</button>
-                <button class="cancel-btn" onclick="closeExitModal()">Cancel</button>
+    <!-- Timer Script -->
+<script>
+    const timerDisplay = document.getElementById('timer');
+    const modal = document.getElementById('modal'); // For submit confirmation
+    const exitModal = document.createElement('div'); // Custom modal for exit warning
+    const totalTime = 20 * 60; // 20 minutes in seconds
+    let testSubmitted = false;
+
+    // Initialize the exit modal
+    function initializeExitModal() {
+        exitModal.classList.add('modal');
+        exitModal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-title">Warning</div>
+                <p>Exiting this page will automatically submit your assessment, and it cannot be retaken. Do you want to continue?</p>
+                <div class="modal-buttons">
+                    <button class="submit-confirm" onclick="confirmExit()">Exit Test</button>
+                    <button class="cancel-btn" onclick="closeExitModal()">Stay on Page</button>
+                </div>
             </div>
-        </div>
-    </div>
+        `;
+        document.body.appendChild(exitModal);
+    }
 
-    <script>
-        const timerDisplay = document.getElementById('timer');
-        const modal = document.getElementById('modal');
-        const exitModal = document.getElementById('exit-modal');
-        const modalMessage = document.getElementById('modal-message');
-        let totalTime = localStorage.getItem('remainingTime') 
-            ? parseInt(localStorage.getItem('remainingTime')) 
-            : 21 * 60; // Timer set to 21 minutes
-        let remainingTime = totalTime;
-        let timer;
+    // Show the exit modal
+    function showExitModal() {
+        exitModal.style.display = 'flex';
+    }
 
-        function initializeTimer() {
-            timer = setInterval(() => {
-                const minutes = Math.floor(remainingTime / 60);
-                const seconds = remainingTime % 60;
+    // Close the exit modal
+    function closeExitModal() {
+        exitModal.style.display = 'none';
+    }
 
-                timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-                remainingTime--;
+    // Confirm exit and submit test
+    function confirmExit() {
+        submitTest(); // Submit the test
+        window.removeEventListener('beforeunload', warnBeforeUnload); // Prevent further warnings
+        window.location.href = 'thank_you.html'; // Redirect to a thank-you page
+    }
 
-                // Save the timer progress in local storage
-                localStorage.setItem('remainingTime', remainingTime);
+    // Timer logic
+    function initializeTimer() {
+        const email = localStorage.getItem('currentEmail');
+        const submissionKey = `submitted_${email}`;
+        const startTimeKey = `startTime_${email}`;
 
-                if (remainingTime < 0) {
-                    clearInterval(timer);
-                    alert("Time is up! Submitting the test automatically.");
-                    submitTest();
-                }
-            }, 1000);
+        if (localStorage.getItem(submissionKey)) {
+            document.body.innerHTML = `<h2 style='text-align:center; margin-top: 20%;'>You have already submitted the test for the email: ${email}. Thank you.</h2>`;
+            return;
         }
 
-        function openModal() {
-            const minutes = Math.floor(remainingTime / 60);
-            const seconds = remainingTime % 60;
-            modalMessage.textContent = `Are you sure you want to submit? You still have ${minutes}:${seconds < 10 ? '0' + seconds : seconds} left to finish your assessment.`;
-            modal.style.display = 'flex';
+        let currentTime = Math.floor(Date.now() / 1000);
+
+        if (!localStorage.getItem(startTimeKey)) {
+            localStorage.setItem(startTimeKey, currentTime);
         }
 
-        function closeModal() {
-            modal.style.display = 'none';
+        const testStartTime = parseInt(localStorage.getItem(startTimeKey), 10);
+        let elapsedTime = currentTime - testStartTime;
+        let timeLeft = totalTime - elapsedTime;
+
+        if (timeLeft <= 0) {
+            submitTest(email);
+            return;
         }
 
-        function openExitModal() {
-            exitModal.style.display = 'flex';
-        }
+        const timer = setInterval(() => {
+            currentTime = Math.floor(Date.now() / 1000);
+            elapsedTime = currentTime - testStartTime;
+            timeLeft = totalTime - elapsedTime;
 
-        function closeExitModal() {
-            exitModal.style.display = 'none';
-        }
-
-        async function submitTest() {
-            clearInterval(timer);
-
-            const assessmentContent = document.querySelector('.editable-box').innerText.trim();
-            if (!assessmentContent) {
-                alert("The text box cannot be empty. Please edit the content before submitting.");
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                submitTest(email);
                 return;
             }
 
-            alert("Your response has been successfully submitted!");
-            localStorage.removeItem('remainingTime'); // Clear timer from storage
-            exitModal.style.display = 'none';
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+        }, 1000);
+    }
+
+    // Save assessment results
+    function saveAssessmentResult(email, content) {
+        const currentDate = new Date();
+        const timestamp = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}_${currentDate.getHours().toString().padStart(2, '0')}-${currentDate.getMinutes().toString().padStart(2, '0')}-${currentDate.getSeconds().toString().padStart(2, '0')}`;
+        const fileName = `Assessment_${email}_${timestamp}.txt`;
+        const blob = new Blob([content], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName;
+        link.click();
+    }
+
+    // Submit test
+    function submitTest() {
+        if (!testSubmitted) {
+            const email = localStorage.getItem('currentEmail');
+            const submissionKey = `submitted_${email}`;
+            const startTimeKey = `startTime_${email}`;
+
+            testSubmitted = true;
+            localStorage.setItem(submissionKey, true);
+            localStorage.removeItem(startTimeKey);
+
+            // Save the result
+            const assessmentContent = document.querySelector('.editable-box').innerText;
+            saveAssessmentResult(email, assessmentContent);
+
             modal.style.display = 'none';
+
+            document.body.innerHTML = `
+    <div style="text-align: center; margin-top: 20%;">
+        <h1 style="font-size: 2.5em;">Thank you!</h1>
+        <p style="font-size: 1.2em;">Your Assessment has been recorded.</p>
+    </div>
+`;
         }
+    }
 
-        // Warn the user before they refresh or leave the page
-        window.onbeforeunload = (event) => {
-            openExitModal();
-            return "Are you sure you want to exit?";
-        };
+    // Add warning when leaving the page
+    function warnBeforeUnload(event) {
+        showExitModal(); // Show custom exit modal
+        event.preventDefault();
+        event.returnValue = ''; // Prevent browser default behaviour
+    }
 
-        document.addEventListener('DOMContentLoaded', initializeTimer);
-    </script>
+    // Handle the submit button click
+    function openModal() {
+        const email = localStorage.getItem('currentEmail');
+        const startTimeKey = `startTime_${email}`;
+        const testStartTime = parseInt(localStorage.getItem(startTimeKey), 10);
+        const currentTime = Math.floor(Date.now() / 1000);
+        const timeLeft = totalTime - (currentTime - testStartTime);
+
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+
+        const modalMessage = document.getElementById('modal-message');
+        modalMessage.textContent = `Are you sure you want to submit? You still have ${minutes}:${seconds < 10 ? '0' + seconds : seconds} left to finish the test.`;
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
+    // Initialize modals and timer
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeTimer();
+        initializeExitModal();
+
+        // Block closing tab or reloading page
+        window.addEventListener('beforeunload', warnBeforeUnload);
+
+        // Prevent back navigation
+        window.addEventListener('popstate', (event) => {
+            showExitModal();
+            history.pushState(null, null, location.href); // Prevent navigation away
+        });
+    });
+</script>
 </body>
 </html>
