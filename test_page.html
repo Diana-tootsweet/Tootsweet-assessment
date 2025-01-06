@@ -125,7 +125,7 @@
     <!-- Page Break -->
     <div class="page-break"></div>
 
-<!-- Page 2: Editable Area -->
+    <!-- Page 2: Editable Area -->
 <div class="container">
 <div contenteditable="true" class="editable-box">
 <div class="right-align">
@@ -163,13 +163,13 @@ Executive General Manger
 Infrastructure Solutions
 </div>
 </div>
-     <button class="submit-btn" onclick="openModal()">Submit</button>
+        <button class="submit-btn" onclick="openModal()">Submit</button>
     </div>
 
     <!-- Modal -->
     <div class="modal" id="modal">
         <div class="modal-content">
-            <p>Are you sure you want to submit?</p>
+            <p id="modal-message">Are you sure you want to submit?</p>
             <div class="modal-buttons">
                 <button onclick="submitTest()">Yes</button>
                 <button onclick="closeModal()">No</button>
@@ -180,16 +180,15 @@ Infrastructure Solutions
     <script>
         const timerDisplay = document.getElementById('timer');
         const modal = document.getElementById('modal');
+        const modalMessage = document.getElementById('modal-message');
         let totalTime = 21 * 60; // Timer set to 21 minutes
         let remainingTime = totalTime;
         let timer;
 
-        // Get name and email dynamically from URL
         const urlParams = new URLSearchParams(window.location.search);
         const name = urlParams.get('name') || "Anonymous";
         const email = urlParams.get('email') || "unknown@example.com";
 
-        // Initialize Timer
         function initializeTimer() {
             timer = setInterval(() => {
                 const minutes = Math.floor(remainingTime / 60);
@@ -206,19 +205,19 @@ Infrastructure Solutions
             }, 1000);
         }
 
-        // Open Modal
         function openModal() {
+            const minutes = Math.floor(remainingTime / 60);
+            const seconds = remainingTime % 60;
+            modalMessage.textContent = `Are you sure you want to submit? You still have ${minutes}:${seconds < 10 ? '0' + seconds : seconds} left to finish your assessment.`;
             modal.style.display = 'flex';
         }
 
-        // Close Modal
         function closeModal() {
             modal.style.display = 'none';
         }
 
-        // Submit Test
         async function submitTest() {
-            clearInterval(timer); // Stop the timer
+            clearInterval(timer);
 
             const assessmentContent = document.querySelector('.editable-box').innerText.trim();
             const timeSpent = `${Math.floor((totalTime - remainingTime) / 60)} minutes ${remainingTime % 60} seconds`;
@@ -260,7 +259,6 @@ Infrastructure Solutions
             modal.style.display = 'none';
         }
 
-        // Start Timer on Page Load
         document.addEventListener('DOMContentLoaded', initializeTimer);
     </script>
 </body>
