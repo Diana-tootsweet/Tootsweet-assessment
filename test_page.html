@@ -225,11 +225,24 @@ Infrastructure Solutions
     </div>
 </div>
 
+<!-- Exit Navigation Modal -->
+<div class="modal" id="navigation-modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-title">Warning</div>
+        <p>Exiting this page will automatically submit your assessment. Do you want to continue?</p>
+        <div class="modal-buttons">
+            <button class="submit-confirm" onclick="confirmNavigation()">Yes, Submit & Exit</button>
+            <button class="cancel-btn" onclick="closeNavigationModal()">No, Stay on Page</button>
+        </div>
+    </div>
+</div>
+
 <!-- Timer Script -->
 <script>
     const timerDisplay = document.getElementById('timer');
     const modal = document.getElementById('modal'); // Submit confirmation modal
     const modalMessage = document.getElementById('modal-message');
+    const navigationModal = document.getElementById('navigation-modal'); // Navigation warning modal
     const totalTime = 21 * 60; // 21 minutes in seconds
     let testSubmitted = false;
     let timer;
@@ -244,12 +257,13 @@ Infrastructure Solutions
         window.location.href = "page2.html"; // Redirect back to the identity page
     }
 
-    // Prevent back navigation
+    // Prevent accidental back navigation
     function preventBackNavigation() {
         history.pushState(null, null, location.href);
-        window.addEventListener("popstate", () => {
-            alert("Navigating back will auto-submit your assessment.");
-            submitTest();
+        window.addEventListener("popstate", (event) => {
+            event.preventDefault();
+            showNavigationModal();
+            history.pushState(null, null, location.href); // Keep user on the page
         });
     }
 
@@ -315,6 +329,21 @@ Infrastructure Solutions
     // Close Modal
     function closeModal() {
         modal.style.display = 'none';
+    }
+
+    // Show Navigation Warning Modal
+    function showNavigationModal() {
+        navigationModal.style.display = 'flex';
+    }
+
+    // Close Navigation Warning Modal
+    function closeNavigationModal() {
+        navigationModal.style.display = 'none';
+    }
+
+    // Confirm Navigation and Auto-Submit
+    function confirmNavigation() {
+        submitTest();
     }
 
     // Submit Test
