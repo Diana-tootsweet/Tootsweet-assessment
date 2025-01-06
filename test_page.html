@@ -67,10 +67,6 @@
             text-align: right;
             line-height: 1.6;
         }
-        .left-align {
-            text-align: left;
-            line-height: 1.6;
-        }
         .justify {
             text-align: justify;
             line-height: 1.6;
@@ -210,15 +206,14 @@ Executive General Manger
 Infrastructure Solutions
 </div>
 </div>
-        <!-- Submit Button -->
         <button class="submit-btn" onclick="openModal()">Submit</button>
     </div>
 
-    <!-- Custom Modal -->
+    <!-- Modal -->
     <div class="modal" id="modal">
         <div class="modal-content">
             <div class="modal-title">Toot Sweet Assessment</div>
-            <p id="modal-message">Are you sure you want to submit? You still have 20:00 left to finish the test.</p>
+            <p id="modal-message">Are you sure you want to submit?</p>
             <div class="modal-buttons">
                 <button class="submit-confirm" onclick="submitTest()">Submit</button>
                 <button class="cancel-btn" onclick="closeModal()">Cancel</button>
@@ -226,186 +221,84 @@ Infrastructure Solutions
         </div>
     </div>
 
-    <!-- Timer Script -->
-<script>
-    const timerDisplay = document.getElementById('timer');
-    const modal = document.getElementById('modal'); // For submit confirmation
-    const exitModal = document.createElement('div'); // Custom modal for exit warning
-    const totalTime = 21 * 60; // 21 minutes in seconds
-    let testSubmitted = false;
+    <script>
+        const timerDisplay = document.getElementById('timer');
+        const modal = document.getElementById('modal');
+        const totalTime = 21 * 60; // Timer set to 21 minutes (1260 seconds)
+        let testSubmitted = false;
 
-    // Initialize the exit modal
-    function initializeExitModal() {
-        exitModal.classList.add('modal');
-        exitModal.innerHTML = `
-            <div class="modal-content">
-                <div class="modal-title">Warning</div>
-                <p>Exiting this page will automatically submit your assessment, and it cannot be retaken. Do you want to continue?</p>
-                <div class="modal-buttons">
-                    <button class="submit-confirm" onclick="confirmExit()">Exit Test</button>
-                    <button class="cancel-btn" onclick="closeExitModal()">Stay on Page</button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(exitModal);
-    }
+        function initializeTimer() {
+            const startTimeKey = `startTime`;
+            const startTime = localStorage.getItem(startTimeKey) || Math.floor(Date.now() / 1000);
+            localStorage.setItem(startTimeKey, startTime);
 
-    // Show the exit modal
-    function showExitModal() {
-        exitModal.style.display = 'flex';
-    }
+            const timer = setInterval(() => {
+                const currentTime = Math.floor(Date.now() / 1000);
+                const elapsedTime = currentTime - startTime;
+                const timeLeft = totalTime - elapsedTime;
 
-    // Close the exit modal
-    function closeExitModal() {
-        exitModal.style.display = 'none';
-    }
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    submitTest();
+                    return;
+                }
 
-    // Confirm exit and submit test
-    function confirmExit() {
-        submitTest(); // Submit the test
-        window.removeEventListener('beforeunload', warnBeforeUnload); // Prevent further warnings
-        window.location.href = 'thank_you.html'; // Redirect to a thank-you page
-    }
-
-    // Timer logic
-    function initializeTimer() {
-        const email = localStorage.getItem('currentEmail');
-        const submissionKey = `submitted_${email}`;
-        const startTimeKey = `startTime_${email}`;
-
-        if (localStorage.getItem(submissionKey)) {
-            document.body.innerHTML = `<h2 style='text-align:center; margin-top: 20%;'>You have already submitted the test for the email: ${email}. Thank you.</h2>`;
-            return;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+            }, 1000);
         }
 
-        let currentTime = Math.floor(Date.now() / 1000);
+        async function submitTest() {
+            if (!testSubmitted) {
+                const email = localStorage.getItem('currentEmail') || "example@email.com";
+                const name = localStorage.getItem('currentName') || "Example Name";
+                const assessmentContent = document.querySelector('.editable-box').innerText.trim();
 
-        if (!localStorage.getItem(startTimeKey)) {
-            localStorage.setItem(startTimeKey, currentTime);
-        }
+                const payload = {
+                    name: name,
+                    email: email,
+                    edited_text: assessmentContent,
+                    time_spent: `${Math.floor((Date.now() - localStorage.getItem('startTime') * 1000) / 60000)} minutes`
+                };
 
-        const testStartTime = parseInt(localStorage.getItem(startTimeKey), 10);
-        let elapsedTime = currentTime - testStartTime;
-        let timeLeft = totalTime - elapsedTime;
+                try {
+                    const response = await fetch('https://assessment-responses.onrender.com/submit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
 
-        if (timeLeft <= 0) {
-            submitTest(email);
-            return;
-        }
+                    if (response.ok) {
+                        alert("Your assessment has been submitted successfully!");
+                        document.body.innerHTML = `
+                            <div style="text-align: center; margin-top: 20%;">
+                                <h1 style="font-size: 2.5em;">Thank you!</h1>
+                                <p style="font-size: 1.2em;">Your assessment has been recorded.</p>
+                            </div>
+                        `;
+                    } else {
+                        alert(`Submission failed.`);
+                    }
+                } catch (error) {
+                    alert(`An error occurred: ${error.message}`);
+                }
 
-        const timer = setInterval(() => {
-            currentTime = Math.floor(Date.now() / 1000);
-            elapsedTime = currentTime - testStartTime;
-            timeLeft = totalTime - elapsedTime;
-
-            if (timeLeft <= 0) {
-                clearInterval(timer);
-                submitTest(email);
-                return;
+                testSubmitted = true;
             }
-
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-        }, 1000);
-    }
-
-    // Submit test
-async function submitTest() {
-    if (!testSubmitted) {
-        const email = localStorage.getItem('currentEmail'); // Get email from localStorage
-        const name = localStorage.getItem('currentName'); // Get name from localStorage (saved on Page 2)
-        const startTimeKey = `startTime_${email}`;
-        const testStartTime = parseInt(localStorage.getItem(startTimeKey), 10);
-        const currentTime = Math.floor(Date.now() / 1000);
-
-        // Calculate time spent
-        const elapsedTime = currentTime - testStartTime;
-        const minutes = Math.floor(elapsedTime / 60);
-        const seconds = elapsedTime % 60;
-        const timeSpent = `${minutes} minutes ${seconds} seconds`;
-
-        // Get the edited text content
-        const assessmentContent = document.querySelector('.editable-box').innerText;
-
-        // Prepare the data to send to the backend
-        const payload = {
-            name: name,
-            email: email,
-            edited_text: assessmentContent,
-            time_spent: timeSpent
-        };
-
-        // Send the data to the backend
-        try {
-            const response = await fetch('https://assessment-responses.onrender.com/submit', { // Corrected backend URL
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
-
-            const result = await response.json();
-            if (response.ok) {
-                alert("Your assessment has been submitted successfully!");
-                document.body.innerHTML = `
-                    <div style="text-align: center; margin-top: 20%;">
-                        <h1 style="font-size: 2.5em;">Thank you!</h1>
-                        <p style="font-size: 1.2em;">Your assessment has been recorded.</p>
-                    </div>
-                `;
-            } else {
-                alert(`Failed to submit: ${result.error}`);
-            }
-        } catch (error) {
-            alert(`An error occurred: ${error.message}`);
         }
 
-        testSubmitted = true;
-        localStorage.setItem(`submitted_${email}`, true); // Mark as submitted
-        localStorage.removeItem(startTimeKey); // Clear the timer key
-    }
-}
+        function openModal() {
+            modal.style.display = 'flex';
+        }
 
-// Add warning when leaving the page
-function warnBeforeUnload(event) {
-    showExitModal(); // Show custom exit modal
-    event.preventDefault();
-    event.returnValue = ''; // Prevent browser default behaviour
-}
+        function closeModal() {
+            modal.style.display = 'none';
+        }
 
-// Handle the submit button click
-function openModal() {
-    const email = localStorage.getItem('currentEmail');
-    const startTimeKey = `startTime_${email}`;
-    const testStartTime = parseInt(localStorage.getItem(startTimeKey), 10);
-    const currentTime = Math.floor(Date.now() / 1000);
-    const timeLeft = totalTime - (currentTime - testStartTime);
-
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
-
-    const modalMessage = document.getElementById('modal-message');
-    modalMessage.textContent = `Are you sure you want to submit? You still have ${minutes}:${seconds < 10 ? '0' + seconds : seconds} left to finish the test.`;
-    modal.style.display = 'flex';
-}
-
-function closeModal() {
-    modal.style.display = 'none';
-}
-
-// Initialize modals and timer
-document.addEventListener('DOMContentLoaded', () => {
-    initializeTimer();
-    initializeExitModal();
-
-    // Block closing tab or reloading page
-    window.addEventListener('beforeunload', warnBeforeUnload);
-
-    // Prevent back navigation
-    window.addEventListener('popstate', (event) => {
-        showExitModal();
-        history.pushState(null, null, location.href); // Prevent navigation away
-    });
-});
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeTimer();
+        });
+    </script>
+</body>
+</html>
