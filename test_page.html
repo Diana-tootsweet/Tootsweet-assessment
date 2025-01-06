@@ -210,7 +210,7 @@ Executive General Manger
 Infrastructure Solutions
 </div>
 </div>
-        <!-- Submit Button -->
+      <!-- Submit Button -->
 <button class="submit-btn" onclick="openModal()">Submit</button>
 
 <!-- Custom Modal -->
@@ -233,12 +233,27 @@ Infrastructure Solutions
     const totalTime = 21 * 60; // 21 minutes in seconds
     let testSubmitted = false;
     let timer;
-    }
 
-    // Restrict retakes for the same email
-    if (sessionStorage.getItem(`submitted_${email}`)) {
-        document.body.innerHTML = `<h2 style='text-align:center; margin-top: 20%;'>You have already submitted the test for the email: ${email}. Thank you.</h2>`;
-        throw new Error("Test already submitted for this email.");
+    // Check if email already exists in sessionStorage
+    let email = sessionStorage.getItem("currentEmail");
+
+    // If email is not found, prompt the user
+    if (!email) {
+        email = prompt("Enter your email to begin the assessment:");
+        if (!email || email.trim() === "") {
+            alert("Email is required to take the assessment.");
+            document.body.innerHTML = "<h2 style='text-align:center; margin-top: 20%;'>Email is required. Please refresh to try again.</h2>";
+            throw new Error("Email is required.");
+        }
+
+        // Check if the email has already submitted
+        if (sessionStorage.getItem(`submitted_${email}`)) {
+            document.body.innerHTML = `<h2 style='text-align:center; margin-top: 20%;'>You have already submitted the test for the email: ${email}. Thank you.</h2>`;
+            throw new Error("Test already submitted for this email.");
+        }
+
+        // Save email to sessionStorage
+        sessionStorage.setItem("currentEmail", email);
     }
 
     // Initialize Timer
