@@ -18,19 +18,42 @@ app.get("/", (req, res) => {
 app.post("/submit", (req, res) => {
     const { name, email, content, submittedAt } = req.body;
 
+    // Validate that all fields are provided
     if (!name || !email || !content || !submittedAt) {
-        return res.status(400).json({ message: "All fields are required." });
+        return res.status(400).json({ 
+            message: "Validation failed. All fields (name, email, content, submittedAt) are required." 
+        });
     }
 
-    submissions.push({ name, email, content, submittedAt });
-    res.status(200).json({ message: "Submission saved successfully." });
+    // Save submission
+    submissions.push({ 
+        name, 
+        email, 
+        content, 
+        submittedAt: new Date(submittedAt) // Ensures the date is stored in a proper format
+    });
+
+    res.status(200).json({ 
+        message: "Submission saved successfully.", 
+        submission: { name, email, submittedAt } 
+    });
 });
 
-// Route to retrieve submissions (optional, for viewing data)
+// Route to retrieve all submissions (optional, for viewing data during debugging)
 app.get("/submissions", (req, res) => {
-    res.status(200).json(submissions);
+    res.status(200).json({
+        total: submissions.length,
+        data: submissions
+    });
+});
+
+// 404 Handler for undefined routes
+app.use((req, res) => {
+    res.status(404).json({ 
+        message: "The requested route does not exist. Please check your URL." 
+    });
 });
 
 // Start the server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
