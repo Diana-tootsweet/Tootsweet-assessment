@@ -114,12 +114,23 @@
                 return;
             }
 
+            if (!validateEmail(email)) {
+                alert("Please enter a valid email address.");
+                return;
+            }
+
             // Save to sessionStorage for use on the next page
             sessionStorage.setItem("name", name);
             sessionStorage.setItem("email", email);
 
             // Redirect to the test page
             window.location.href = "test_page.html";
+        }
+
+        // Function to validate email address
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
         }
     </script>
 </body>
