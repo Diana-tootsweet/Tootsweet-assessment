@@ -11,6 +11,7 @@ const submissions = [];
 
 // Root route to confirm the backend is running
 app.get("/", (req, res) => {
+    console.log("GET / - Backend health check");
     res.send("Backend is live! You can submit your assessment.");
 });
 
@@ -18,29 +19,41 @@ app.get("/", (req, res) => {
 app.post("/submit", (req, res) => {
     const { name, email, content, submittedAt } = req.body;
 
+    console.log("POST /submit - Incoming submission:", req.body);
+
     // Validate that all fields are provided
     if (!name || !email || !content || !submittedAt) {
+        console.error("Validation error: Missing required fields");
         return res.status(400).json({ 
             message: "Validation failed. All fields (name, email, content, submittedAt) are required." 
         });
     }
 
-    // Save submission
-    submissions.push({ 
-        name, 
-        email, 
-        content, 
-        submittedAt: new Date(submittedAt) // Ensures the date is stored in a proper format
-    });
+    try {
+        // Save submission
+        submissions.push({ 
+            name, 
+            email, 
+            content, 
+            submittedAt: new Date(submittedAt) // Ensures the date is stored in a proper format
+        });
 
-    res.status(200).json({ 
-        message: "Submission saved successfully.", 
-        submission: { name, email, submittedAt } 
-    });
+        console.log("Submission saved successfully:", { name, email, submittedAt });
+        res.status(200).json({ 
+            message: "Submission saved successfully.", 
+            submission: { name, email, submittedAt } 
+        });
+    } catch (error) {
+        console.error("Error saving submission:", error);
+        res.status(500).json({ 
+            message: "An error occurred while saving the submission. Please try again later." 
+        });
+    }
 });
 
 // Route to retrieve all submissions (optional, for viewing data during debugging)
 app.get("/submissions", (req, res) => {
+    console.log("GET /submissions - Returning all submissions");
     res.status(200).json({
         total: submissions.length,
         data: submissions
@@ -49,6 +62,7 @@ app.get("/submissions", (req, res) => {
 
 // 404 Handler for undefined routes
 app.use((req, res) => {
+    console.error("404 Error - Undefined route accessed:", req.originalUrl);
     res.status(404).json({ 
         message: "The requested route does not exist. Please check your URL." 
     });
